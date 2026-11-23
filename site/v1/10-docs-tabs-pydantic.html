@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pydantic — Python Installation &amp; Lockfile Pinning</title>
+  <style>
+
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #f1f5f9;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --badge-bg: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-fg: #e2e8f0;
+  --warn-bg: #fefce8;
+  --warn-border: #fde047;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 1.5rem;
+}
+.site-header-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.site-nav a { color: var(--muted); }
+.page-wrap {
+  max-width: 980px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+.fixture-stamp {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.hero {
+  margin-bottom: 1.75rem;
+}
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.9rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 68ch;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+.prose-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+th, td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--surface-alt);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: none;
+}
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: var(--surface);
+  z-index: 2;
+  border-right: 1px solid var(--border);
+}
+thead .sticky-col {
+  background: var(--surface-alt);
+  z-index: 3;
+}
+.site-footer {
+  max-width: 980px;
+  margin: 2.5rem auto 0;
+  padding: 1.25rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.footnotes {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface-alt);
+  border-top: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+.footnotes h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.footnotes ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+pre {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+p code, li code {
+  background: var(--surface-alt);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+
+.aria-tabs {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.aria-tab-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.aria-tablist {
+  display: flex;
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border);
+  padding: 0 0.5rem;
+}
+.aria-tablist label {
+  cursor: pointer;
+  padding: 0.65rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+#py-pip:checked ~ .aria-tablist label[for="py-pip"],
+#py-uv:checked ~ .aria-tablist label[for="py-uv"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--surface);
+}
+.aria-tabpanel { padding: 1.15rem; }
+#py-uv:checked ~ .aria-tabpanels #panel-pip { display: none; }
+#py-uv:checked ~ .aria-tabpanels #panel-uv[hidden] { display: block; }
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">Pydantic Docs</div>
+      <nav class="site-nav" aria-label="Primary">
+          <a href="#section-1">Overview</a>
+          <a href="#section-2">Install</a>
+          <a href="#section-3">Example</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-wrap">
+    <p class="fixture-stamp">Generated on 2026-11-23, data as of 2026-11-19 (UTC)</p>
+    <section class="hero" id="section-1">
+      <h1>Pydantic — Python Installation &amp; Lockfile Pinning</h1>
+      <p>Data validation using Python type hints, backed by a Rust core validator. Supported Python versions: <code>&gt;=3.10</code>.</p>
+    </section>
+
+    <section class="card" id="section-2">
+      <h2 class="section-title">Install Package</h2>
+      <p class="prose-note">Choose <strong>pip</strong> for quick local prototyping or open the <strong>uv / requirements.txt (Pinned)</strong> tab for reproducible CI deployments.</p>
+
+      <div class="aria-tabs">
+        <input class="aria-tab-input" type="radio" name="pydantic-installer" id="py-pip" checked>
+        <input class="aria-tab-input" type="radio" name="pydantic-installer" id="py-uv">
+
+        <div class="aria-tablist" role="tablist" aria-label="Python package installer">
+          <label role="tab" id="tab-pip" for="py-pip" aria-controls="panel-pip" aria-selected="true">pip</label>
+          <label role="tab" id="tab-uv" for="py-uv" aria-controls="panel-uv" aria-selected="false">uv / requirements.txt (Pinned)</label>
+        </div>
+
+        <div class="aria-tabpanels">
+          <div id="panel-pip" class="aria-tabpanel" role="tabpanel" aria-labelledby="tab-pip">
+            <p class="prose-note" style="margin-top:0;">Install the latest compatible release via pip:</p>
+            <pre><code>pip install pydantic</code></pre>
+          </div>
+
+          <div id="panel-uv" class="aria-tabpanel" role="tabpanel" aria-labelledby="tab-uv" hidden aria-hidden="true">
+            <p class="prose-note" style="margin-top:0;">Pin the exact current PyPI release in uv or requirements.txt:</p>
+            <pre><code>uv add "pydantic==2.14.4"
+
+# requirements.txt
+pydantic==2.14.4</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="section-3">
+      <h2 class="section-title">Quick Validation Example</h2>
+      <pre><code>from pydantic import BaseModel
+
+class Invoice(BaseModel):
+    account_id: int
+    currency: str = "USD"
+    amount_cents: int</code></pre>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <span>Version fetched at build time from PyPI JSON API — Benchmark fixture</span>
+    <span>Fixture set v1 &middot; <a href="./index.html">All fixtures</a></span>
+  </footer>
+</body>
+</html>

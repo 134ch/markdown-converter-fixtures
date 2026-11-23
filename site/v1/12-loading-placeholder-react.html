@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Package Telemetry — React npm Release Status</title>
+  <style>
+
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #f1f5f9;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --badge-bg: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-fg: #e2e8f0;
+  --warn-bg: #fefce8;
+  --warn-border: #fde047;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 1.5rem;
+}
+.site-header-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.site-nav a { color: var(--muted); }
+.page-wrap {
+  max-width: 980px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+.fixture-stamp {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.hero {
+  margin-bottom: 1.75rem;
+}
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.9rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 68ch;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+.prose-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+th, td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--surface-alt);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: none;
+}
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: var(--surface);
+  z-index: 2;
+  border-right: 1px solid var(--border);
+}
+thead .sticky-col {
+  background: var(--surface-alt);
+  z-index: 3;
+}
+.site-footer {
+  max-width: 980px;
+  margin: 2.5rem auto 0;
+  padding: 1.25rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.footnotes {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface-alt);
+  border-top: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+.footnotes h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.footnotes ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+pre {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+p code, li code {
+  background: var(--surface-alt);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.registry-status-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+.status-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+.placeholder-dash {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.5rem;
+  color: var(--muted);
+}
+.registry-status-card[data-hydrated="true"] .placeholder-dash {
+  display: none;
+}
+.version-readout {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.status-meta {
+  margin-top: 0.45rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">Package Telemetry</div>
+      <nav class="site-nav" aria-label="Primary">
+          <a href="#section-1">Overview</a>
+          <a href="#section-2">Release Status</a>
+          <a href="#section-3">Verification</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-wrap">
+    <p class="fixture-stamp">Generated on 2026-11-23, data as of 2026-10-14 (UTC)</p>
+    <section class="hero" id="section-1">
+      <h1>Package Telemetry — React npm Release Status</h1>
+      <p>Build-time registry telemetry tracking the current stable <code>latest</code> dist-tag for the <code>react</code> package on the public npm registry.</p>
+    </section>
+
+    <section class="status-grid" id="section-2" aria-label="Registry release status">
+      <div class="registry-status-card" data-hydrated="true" aria-busy="false">
+        <div class="status-label">React Stable Release (npm dist-tag: latest)</div>
+        <div class="loading-state" hidden>
+          <span>Fetching latest release... (v0.0.0-loading)</span>
+        </div>
+        <span class="placeholder-dash" aria-hidden="true">--</span>
+        <div class="loaded-state">
+          <data class="version-readout" value="19.3.1">v19.3.1</data>
+        </div>
+        <div class="status-meta">Published: 2026-10-14 &middot; Registry: registry.npmjs.org</div>
+      </div>
+
+      <div class="registry-status-card" data-hydrated="true" aria-busy="false">
+        <div class="status-label">Package License &amp; Distribution</div>
+        <div class="loading-state" hidden>
+          <span>Loading package metadata...</span>
+        </div>
+        <div class="loaded-state">
+          <data class="version-readout" value="MIT" style="color: var(--text);">MIT</data>
+        </div>
+        <div class="status-meta">Public npm registry &middot; ESM &amp; CJS builds</div>
+      </div>
+    </section>
+
+    <section class="card" id="section-3">
+      <h2 class="section-title">Release Verification</h2>
+      <p class="prose-note">Before upgrading React in production applications, verify that <code>react</code> and <code>react-dom</code> resolve to matching exact versions in your lockfile.</p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <span>Version fetched at build time from npm Registry API — Benchmark fixture</span>
+    <span>Fixture set v1 &middot; <a href="./index.html">All fixtures</a></span>
+  </footer>
+</body>
+</html>

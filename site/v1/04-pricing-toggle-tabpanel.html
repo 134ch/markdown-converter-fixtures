@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeployKit CI — Hosted Build Runner Plans</title>
+  <style>
+
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #f1f5f9;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --badge-bg: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-fg: #e2e8f0;
+  --warn-bg: #fefce8;
+  --warn-border: #fde047;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 1.5rem;
+}
+.site-header-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.site-nav a { color: var(--muted); }
+.page-wrap {
+  max-width: 980px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+.fixture-stamp {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.hero {
+  margin-bottom: 1.75rem;
+}
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.9rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 68ch;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+.prose-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+th, td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--surface-alt);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: none;
+}
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: var(--surface);
+  z-index: 2;
+  border-right: 1px solid var(--border);
+}
+thead .sticky-col {
+  background: var(--surface-alt);
+  z-index: 3;
+}
+.site-footer {
+  max-width: 980px;
+  margin: 2.5rem auto 0;
+  padding: 1.25rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.footnotes {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface-alt);
+  border-top: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+.footnotes h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.footnotes ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+pre {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+p code, li code {
+  background: var(--surface-alt);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+
+.billing-tabs { position: relative; }
+.tab-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.tablist {
+  display: inline-flex;
+  border-bottom: 2px solid var(--border);
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.tablist label {
+  cursor: pointer;
+  padding: 0.6rem 1.15rem;
+  font-weight: 600;
+  font-size: 0.94rem;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+#tab-monthly:checked ~ .tablist label[for="tab-monthly"],
+#tab-annual:checked ~ .tablist label[for="tab-annual"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+.plan-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem;
+}
+.plan-box h3 { margin: 0 0 0.25rem; }
+.plan-rate { font-size: 1.85rem; font-weight: 800; color: var(--text); margin: 0.65rem 0 0.2rem; }
+.plan-meta { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.85rem; }
+#tab-annual:checked ~ .tab-panels #panel-monthly { display: none; }
+#tab-annual:checked ~ .tab-panels #panel-annual[hidden] { display: block; }
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">DeployKit CI</div>
+      <nav class="site-nav" aria-label="Primary">
+          <a href="#section-1">Overview</a>
+          <a href="#section-2">Plans</a>
+          <a href="#section-3">Metering</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-wrap">
+    <p class="fixture-stamp">Generated on 2026-11-23, data as of 2026-11-23 (UTC)</p>
+    <section class="hero" id="section-1">
+      <h1>DeployKit CI — Hosted Build Runner Plans</h1>
+      <p>Fast x86 and ARM64 Linux build runners with persistent layer caching, artifact retention, and zero queue times. Compare standard monthly rates and annual commitment discounts below.</p>
+    </section>
+
+    <section class="card billing-tabs" id="section-2">
+      <h2 class="section-title">Select Billing Schedule</h2>
+      <input class="tab-input" type="radio" name="deploykit-billing" id="tab-monthly" checked>
+      <input class="tab-input" type="radio" name="deploykit-billing" id="tab-annual">
+
+      <div class="tablist" role="tablist" aria-label="Billing schedule">
+        <label role="tab" id="label-monthly" for="tab-monthly" aria-controls="panel-monthly" aria-selected="true">Monthly Billing</label>
+        <label role="tab" id="label-annual" for="tab-annual" aria-controls="panel-annual" aria-selected="false">Annual Billing (20% Off)</label>
+      </div>
+
+      <div class="tab-panels">
+        <div id="panel-monthly" role="tabpanel" aria-labelledby="label-monthly">
+          <div class="plan-grid">
+            <div class="plan-box">
+              <h3>Developer</h3>
+              <div class="plan-rate">$35/mo</div>
+              <p class="plan-meta">Monthly subscription &middot; 2,500 build minutes</p>
+              <p class="prose-note">4-core runners, 20 GB build cache, GitHub &amp; GitLab status checks.</p>
+            </div>
+            <div class="plan-box">
+              <h3>Team</h3>
+              <div class="plan-rate">$120/mo</div>
+              <p class="plan-meta">Monthly subscription &middot; 12,000 build minutes</p>
+              <p class="prose-note">8-core runners, 100 GB build cache, parallel matrix jobs, SOC 2 reports.</p>
+            </div>
+            <div class="plan-box">
+              <h3>Scale</h3>
+              <div class="plan-rate">$320/mo</div>
+              <p class="plan-meta">Monthly subscription &middot; 40,000 build minutes</p>
+              <p class="prose-note">16-core runners, private networking, SAML SSO, priority support.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-annual" role="tabpanel" aria-labelledby="label-annual" hidden>
+          <div class="plan-grid">
+            <div class="plan-box">
+              <h3>Developer</h3>
+              <div class="plan-rate">$28/mo</div>
+              <p class="plan-meta">Billed annually ($336/year) &middot; 2,500 build minutes</p>
+              <p class="prose-note">4-core runners, 20 GB build cache, GitHub &amp; GitLab status checks.</p>
+            </div>
+            <div class="plan-box">
+              <h3>Team</h3>
+              <div class="plan-rate">$96/mo</div>
+              <p class="plan-meta">Billed annually ($1,152/year) &middot; 12,000 build minutes</p>
+              <p class="prose-note">8-core runners, 100 GB build cache, parallel matrix jobs, SOC 2 reports.</p>
+            </div>
+            <div class="plan-box">
+              <h3>Scale</h3>
+              <div class="plan-rate">$256/mo</div>
+              <p class="plan-meta">Billed annually ($3,072/year) &middot; 40,000 build minutes</p>
+              <p class="prose-note">16-core runners, private networking, SAML SSO, priority support.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="section-3">
+      <h2 class="section-title">Overages &amp; Concurrency</h2>
+      <p class="prose-note">Additional build minutes above your monthly allowance are metered at $0.008 per vCPU-minute. Concurrent job caps can be raised on request for release sprints.</p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <span>DeployKit Cloud Inc. — Synthetic benchmark fixture</span>
+    <span>Fixture set v1 &middot; <a href="./index.html">All fixtures</a></span>
+  </footer>
+</body>
+</html>

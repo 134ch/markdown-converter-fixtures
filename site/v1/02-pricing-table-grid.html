@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VaultDB Cloud — Managed Postgres Pricing Matrix</title>
+  <style>
+
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #f1f5f9;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --badge-bg: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-fg: #e2e8f0;
+  --warn-bg: #fefce8;
+  --warn-border: #fde047;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 1.5rem;
+}
+.site-header-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.site-nav a { color: var(--muted); }
+.page-wrap {
+  max-width: 980px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+.fixture-stamp {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.hero {
+  margin-bottom: 1.75rem;
+}
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.9rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 68ch;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+.prose-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+th, td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--surface-alt);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: none;
+}
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: var(--surface);
+  z-index: 2;
+  border-right: 1px solid var(--border);
+}
+thead .sticky-col {
+  background: var(--surface-alt);
+  z-index: 3;
+}
+.site-footer {
+  max-width: 980px;
+  margin: 2.5rem auto 0;
+  padding: 1.25rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.footnotes {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface-alt);
+  border-top: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+.footnotes h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.footnotes ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+pre {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+p code, li code {
+  background: var(--surface-alt);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+
+.matrix-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.pricing-matrix {
+  display: grid;
+  min-width: 680px;
+}
+.matrix-row {
+  display: grid;
+  grid-template-columns: 220px repeat(4, minmax(110px, 1fr));
+  border-bottom: 1px solid var(--border);
+}
+.matrix-row:last-child { border-bottom: none; }
+.matrix-head {
+  background: var(--surface-alt);
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+.matrix-cell {
+  padding: 0.85rem 1rem;
+  font-size: 0.94rem;
+}
+.matrix-row [role="rowheader"] {
+  font-weight: 600;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.matrix-head .corner {
+  border-right: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  background: var(--surface-alt);
+  z-index: 3;
+}
+.price-highlight { font-weight: 700; color: var(--accent); font-size: 1.05rem; }
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">VaultDB Cloud</div>
+      <nav class="site-nav" aria-label="Primary">
+          <a href="#section-1">Overview</a>
+          <a href="#section-2">Pricing Matrix</a>
+          <a href="#section-3">Storage</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-wrap">
+    <p class="fixture-stamp">Generated on 2026-11-23, data as of 2026-11-23 (UTC)</p>
+    <section class="hero" id="section-1">
+      <h1>VaultDB Cloud — Managed Postgres Pricing Matrix</h1>
+      <p>Dedicated NVMe-backed PostgreSQL clusters with automated daily snapshots, connection pooling, and zero-downtime minor upgrades across 14 global regions.</p>
+    </section>
+
+    <section class="card" id="section-2">
+      <h2 class="section-title">Feature &amp; Tier Comparison</h2>
+      <p class="prose-note">Each column lists the monthly base rate and provisioned resources for a single primary database instance.</p>
+      <div class="matrix-wrap">
+        <div class="pricing-matrix" role="table" aria-label="VaultDB Cloud pricing matrix">
+          <div class="matrix-row matrix-head" role="row">
+            <div class="matrix-cell corner" role="columnheader" aria-label="Feature"></div>
+            <div class="matrix-cell" role="columnheader">Hobby</div>
+            <div class="matrix-cell" role="columnheader">Pro</div>
+            <div class="matrix-cell" role="columnheader">Team</div>
+            <div class="matrix-cell" role="columnheader">Enterprise</div>
+          </div>
+          <div class="matrix-row" role="row">
+            <div class="matrix-cell sticky-col" role="rowheader">Monthly base price</div>
+            <div class="matrix-cell price-highlight" role="cell">$29/mo</div>
+            <div class="matrix-cell price-highlight" role="cell">$99/mo</div>
+            <div class="matrix-cell price-highlight" role="cell">$299/mo</div>
+            <div class="matrix-cell price-highlight" role="cell">$799/mo</div>
+          </div>
+          <div class="matrix-row" role="row">
+            <div class="matrix-cell sticky-col" role="rowheader">Dedicated vCPU / RAM</div>
+            <div class="matrix-cell" role="cell">2 vCPU / 4 GB</div>
+            <div class="matrix-cell" role="cell">4 vCPU / 16 GB</div>
+            <div class="matrix-cell" role="cell">8 vCPU / 32 GB</div>
+            <div class="matrix-cell" role="cell">32 vCPU / 128 GB</div>
+          </div>
+          <div class="matrix-row" role="row">
+            <div class="matrix-cell sticky-col" role="rowheader">Included NVMe storage</div>
+            <div class="matrix-cell" role="cell">40 GB</div>
+            <div class="matrix-cell" role="cell">200 GB</div>
+            <div class="matrix-cell" role="cell">1 TB</div>
+            <div class="matrix-cell" role="cell">4 TB</div>
+          </div>
+          <div class="matrix-row" role="row">
+            <div class="matrix-cell sticky-col" role="rowheader">Point-in-time recovery</div>
+            <div class="matrix-cell" role="cell">7 days</div>
+            <div class="matrix-cell" role="cell">14 days</div>
+            <div class="matrix-cell" role="cell">30 days</div>
+            <div class="matrix-cell" role="cell">90 days</div>
+          </div>
+          <div class="matrix-row" role="row">
+            <div class="matrix-cell sticky-col" role="rowheader">Read replicas included</div>
+            <div class="matrix-cell" role="cell">0</div>
+            <div class="matrix-cell" role="cell">1 replica</div>
+            <div class="matrix-cell" role="cell">3 replicas</div>
+            <div class="matrix-cell" role="cell">Up to 10 replicas</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="section-3">
+      <h2 class="section-title">Storage &amp; Network Transfer</h2>
+      <p class="prose-note">Additional NVMe storage expands automatically in 10 GB increments at $0.15/GB-month. Private VPC peering and intra-region replication traffic are included at no extra cost.</p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <span>VaultDB Cloud Ltd. — Synthetic benchmark fixture</span>
+    <span>Fixture set v1 &middot; <a href="./index.html">All fixtures</a></span>
+  </footer>
+</body>
+</html>
