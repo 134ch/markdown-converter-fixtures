@@ -57,6 +57,31 @@ out/{tool}/{slug}_{run}.md
 
 Example: `out/firecrawl/01-pricing-table-rowheader_1.md` and `out/firecrawl/01-pricing-table-rowheader_2.md`. (`out/` is gitignored.)
 
+## Test runner (`run-a2-test.py`)
+
+A single-file script that runs all 12 fixture pages through Firecrawl, Crawl4AI, and Jina Reader, and records whether each tool returns the needle value intact.
+
+What it does:
+
+- Loads the needle list from the live `needles.json` (or a local copy with `--needles`).
+- For each tool, run, and page: calls the tool, saves the raw markdown to `out/{tool}/{slug}_{run}.md`, and checks the needle: `found` (expected value present), `wrong` (the silent-wrong value present instead), or `missing`.
+- Appends a per-run log to `out/results.json` (latency, character count, errors), merging with earlier runs instead of overwriting them.
+- Jina Reader: free `r.jina.ai` endpoint, no key needed; optional `JINA_API_KEY` raises the rate limit. Firecrawl: `api.firecrawl.dev/v1/scrape`, needs `FIRECRAWL_API_KEY` (free tier at firecrawl.dev). Crawl4AI: headless browser crawl, needs `pip install crawl4ai` then `crawl4ai-setup`; skipped with instructions if missing.
+- Options: `--tools jina,firecrawl,crawl4ai`, `--runs 1` (or `2`), `--pages` to run only some slugs, `--delay` seconds between requests.
+
+```bash
+python3 run-a2-test.py --tools crawl4ai --runs 1
+python3 run-a2-test.py --tools firecrawl --runs 1   # needs FIRECRAWL_API_KEY
+python3 run-a2-test.py --tools jina --runs 1 --delay 10
+```
+
+Why Python:
+
+- Crawl4AI is a Python library. There is no supported way to run it from another language, so the runner has to be Python for that leg.
+- The other two legs are plain HTTP calls, done with the standard library (`urllib`) only, so Jina and Firecrawl need no extra packages.
+- The fixture generator is Python too, so the whole benchmark is one language and one install.
+- The script is short (one file, about 200 lines) and readable, so anyone can audit exactly what was measured.
+
 ## Deployment
 
 Deploy the contents of `site/` as the static web root for `https://test.bachwidy.site`:
